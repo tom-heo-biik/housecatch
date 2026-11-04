@@ -31,6 +31,7 @@ TOPIC_MIN, TOPIC_MAX = 8, 80  # characters of a topic line
 NOTE_MAX = KEYWORD_MAX = 40
 ID_SHAPE = re.compile(r"^([a-z]+)([0-9]+)$")
 AUTO_NOTE = "자동 {date}"  # appended to the node's note, so a person can tell the plan node's topics apart
+GIVEN_NOTE = "사용자 지정 {date}"  # a topic the person named (batch's given topics), kept so later plans avoid it
 LOGIN_WORDS = ("/login", "log in", "login", "API key", "OAuth", "인증")
 
 REQUEST_HEAD = "{name} 블로그의 새 주제 {count}개를 써 주십시오."
@@ -152,8 +153,17 @@ def next_ids(ids: list[str], n: int) -> list[str]:
     return found
 
 
-def append(brand_dir: Path, kept: list[dict], now: datetime) -> list[str]:
-    """Append kept topics to topics.json as approved and return their ids. A missing file is made (stop)."""
+def record_given(brand_dir: Path, lines: list[str], now: datetime) -> list[str]:
+    """Append the topics a person named to topics.json as not approved, so no run is handed them again and the
+    plan node still sees them as written ones; their ids come back."""
+    kept = [{"topic": " ".join(line.split()), "note": "", "keyword": ""} for line in lines if line.strip()]
+    return append(brand_dir, kept, now, approved=False, stamp=GIVEN_NOTE)
+
+
+def append(brand_dir: Path, kept: list[dict], now: datetime, *, approved: bool = True,
+           stamp: str = AUTO_NOTE) -> list[str]:
+    """Append kept topics to topics.json (approved unless told otherwise) and return their ids. A missing file
+    is made (stop)."""
     path = topics.path_of(Path(brand_dir))
     if path.exists():
         data = json.loads(path.read_text(encoding="utf-8"))
@@ -163,10 +173,10 @@ def append(brand_dir: Path, kept: list[dict], now: datetime) -> list[str]:
     if not isinstance(listed, list):
         raise ValueError(topics.NOT_LIST)
     ids = next_ids([str(item.get("id", "")) for item in listed if isinstance(item, dict)], len(kept))
-    stamp = AUTO_NOTE.format(date=now.strftime("%Y-%m-%d"))
+    stamp = stamp.format(date=now.strftime("%Y-%m-%d"))
     for new_id, item in zip(ids, kept):
         note = f"{item['note']}, {stamp}" if item["note"] else stamp
-        listed.append({"id": new_id, "topic": item["topic"], "keyword": item["keyword"], "approved": True,
+        listed.append({"id": new_id, "topic": item["topic"], "keyword": item["keyword"], "approved": approved,
                        "note": note})
     text = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
     temp = path.with_name(f".{path.name}.{os.getpid()}.new")

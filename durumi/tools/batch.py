@@ -4,9 +4,12 @@
 left (claims.counts, LEFT and FAILED); when it has fewer, the plan node writes the rest (plan.generate). It
 then starts one run per post, each its own process with the request that hands the topic over (REQUEST),
 at most `parallel` at a time. Every run claims its own topic (claims.assign), so runs started together never
-share one. Finished posts are moved from the brand's blogs folder to the outbox when one is given (posts a
-killed batch left there are moved first), the topic record is exported (ledger.export), and one summary is
-printed: the titles and where they are, and for a run that stopped, the last lines of its log.
+share one. Topics a person named ('천장 누수 보험 처리로 써 줘') go another way: one run each with the topic in
+its request (GIVEN_REQUEST), nothing planned or claimed, and the topics recorded in topics.json as not
+approved (plan.record_given) so later plans steer clear of them. Finished posts are moved from the brand's
+blogs folder to the outbox when one is given (posts a killed batch left there are moved first), the topic
+record is exported (ledger.export), and one summary is printed: the titles and where they are, and for a run
+that stopped, the last lines of its log.
 """
 from __future__ import annotations
 
@@ -27,6 +30,7 @@ from naming import now_kst
 
 DEFAULT_COUNT = 5
 REQUEST = "{name} 블로그 아무거나 써줘\n"  # resolve.topic_kind reads it as a request that hands the topic over
+GIVEN_REQUEST = "{name} 블로그 {topic}\n"  # a request that names its topic: the run writes on it as given
 BATCH_DIR = "_batch"  # under the runs folder; show and the claims pass over names that start with '_'
 POLL_SEC = 5
 STAGGER_SEC = 2  # between two starts, so the runs do not all reach claude in one moment
@@ -92,19 +96,18 @@ def run_command(root: Path, brand: Brand, request: Path) -> list[str]:
             "--brand", brand.id, "--deliver", "brand"]
 
 
-def run_all(root: Path, brand: Brand, n: int, parallel: int, request: Path, folder: Path, log,
+def run_all(root: Path, brand: Brand, requests: list[Path], parallel: int, folder: Path, log,
             spawn=subprocess.Popen, sleep=time.sleep, clock=time.monotonic) -> list[tuple[int, int, Path, float]]:
-    """Start n runs, at most `parallel` at a time; (number, exit code, log path, minutes) of each, in order."""
-    command = run_command(root, brand, request)
+    """Start one run per request, at most `parallel` at a time; (number, exit code, log path, minutes) of each."""
     env = dict(os.environ, PYTHONUTF8="1", PYTHONIOENCODING="utf-8")
-    waiting, active, done = list(range(1, n + 1)), {}, []
+    waiting, active, done = list(range(1, len(requests) + 1)), {}, []
     while waiting or active:
         while waiting and len(active) < parallel:
             number = waiting.pop(0)
             log_path = folder / f"run-{number}.log"
             handle = open(log_path, "wb")
-            proc = spawn(command, stdout=handle, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, env=env,
-                         cwd=str(root))
+            proc = spawn(run_command(root, brand, requests[number - 1]), stdout=handle, stderr=subprocess.STDOUT,
+                         stdin=subprocess.DEVNULL, env=env, cwd=str(root))
             active[number] = (proc, handle, log_path, clock())
             if waiting and len(active) < parallel:
                 sleep(STAGGER_SEC)
@@ -122,41 +125,52 @@ def run_all(root: Path, brand: Brand, n: int, parallel: int, request: Path, fold
 
 
 def batch(root, brand: Brand, *, count: int = DEFAULT_COUNT, parallel: int | None = None, outbox=None,
-          log=print, call=None, spawn=subprocess.Popen, sleep=time.sleep, clock=time.monotonic) -> int:
-    """Write `count` posts of brand at once (module docstring). The exit code says how it went."""
+          given=None, log=print, call=None, spawn=subprocess.Popen, sleep=time.sleep, clock=time.monotonic) -> int:
+    """Write `count` posts of brand at once, or one post on each topic in `given` (module docstring). The exit
+    code says how it went."""
     root = Path(root)
     began = clock()
     blogs = Path(brand.dir) / "blogs"
     outbox = Path(outbox) if outbox else None
+    given = [" ".join(line.split()) for line in given or [] if line and line.strip()]
     if outbox is not None:
         outbox.mkdir(parents=True, exist_ok=True)
         left = move_posts(blogs, outbox)
         if left:
             log(f"지난번에 끝나고 옮기지 못한 글 {len(left)}편을 {outbox.as_posix()}로 옮겼습니다.")
-    found = topics.load(brand.dir)
-    free = free_count(root, brand, found)
-    if free < count:
-        need = count - free
-        log(f"새 주제 {need}개를 정합니다. 지난 주제와 겹치지 않게 고릅니다.")
-        made = plan.generate(root, brand, need, call=call, log=log)
-        for _id, topic in made:
-            log(f"- {topic}")
-        found = topics.load(brand.dir)
-        free = free_count(root, brand, found)
-    n = min(count, free)
-    if n == 0:
-        log("쓸 주제가 없어 글을 쓰지 못했습니다.")
-        return EXIT_TOPIC
-    if n < count:
-        log(f"새 주제가 {n}개뿐이라 {n}편만 씁니다.")
     folder = runs_root(root) / BATCH_DIR / now_kst().strftime("%Y%m%d-%H%M%S")
     folder.mkdir(parents=True, exist_ok=True)
-    request = folder / "request.txt"
-    request.write_text(REQUEST.format(name=brand.name), encoding="utf-8")
+    if given:
+        texts = [GIVEN_REQUEST.format(name=brand.name, topic=line) for line in given]
+        plan.record_given(brand.dir, given, now_kst())
+        log(f"주신 주제 {len(given)}개로 씁니다.")
+    else:
+        found = topics.load(brand.dir)
+        free = free_count(root, brand, found)
+        if free < count:
+            need = count - free
+            log(f"새 주제 {need}개를 정합니다. 지난 주제와 겹치지 않게 고릅니다.")
+            made = plan.generate(root, brand, need, call=call, log=log)
+            for _id, topic in made:
+                log(f"- {topic}")
+            found = topics.load(brand.dir)
+            free = free_count(root, brand, found)
+        n = min(count, free)
+        if n == 0:
+            log("쓸 주제가 없어 글을 쓰지 못했습니다.")
+            return EXIT_TOPIC
+        if n < count:
+            log(f"새 주제가 {n}개뿐이라 {n}편만 씁니다.")
+        texts = [REQUEST.format(name=brand.name)] * n
+    requests = []
+    for number, text in enumerate(texts, 1):
+        request = folder / f"request-{number}.txt"
+        request.write_text(text, encoding="utf-8")
+        requests.append(request)
     before = {p.name for p in blogs.glob("*.html")} if blogs.is_dir() else set()
-    log(f"블로그 {n}편을 한꺼번에 씁니다. 한 편에 20분 안팎이 걸리고, 모두 함께 돌아갑니다.")
-    results = run_all(root, brand, n, max(1, parallel or n), request, folder, log, spawn=spawn, sleep=sleep,
-                      clock=clock)
+    log(f"블로그 {len(requests)}편을 한꺼번에 씁니다. 한 편에 20분 안팎이 걸리고, 모두 함께 돌아갑니다.")
+    results = run_all(root, brand, requests, max(1, parallel or len(requests)), folder, log, spawn=spawn,
+                      sleep=sleep, clock=clock)
     fresh = {p.name for p in blogs.glob("*.html")} - before if blogs.is_dir() else set()
     if outbox is not None:
         posts = move_posts(blogs, outbox, fresh)

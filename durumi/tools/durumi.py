@@ -13,7 +13,7 @@
   python tools/durumi.py deploy [--out DIR]
   python tools/durumi.py sync-skill
   python tools/durumi.py plan <brand> [--count N]
-  python tools/durumi.py batch <brand> [--count N] [--parallel N] [--outbox DIR]
+  python tools/durumi.py batch <brand> [--count N] [--parallel N] [--outbox DIR] [--topic TEXT ...]
   python tools/durumi.py export --brand id --out DIR
 
 Every command also takes --root DIR (the durumi root itself; the run commands preflight prints
@@ -650,7 +650,7 @@ def cmd_batch(root, args) -> int:
         return code
     try:
         return batch.batch(root, brand, count=max(1, args.count), parallel=args.parallel, outbox=args.outbox,
-                           log=lambda line: print(line, flush=True))
+                           given=args.topic, log=lambda line: print(line, flush=True))
     except (ConfigError, NodeError, OSError, ValueError) as exc:
         _err(f"글을 쓰지 못했습니다. {exc}")
         return pipeline.EXIT_ENV
@@ -731,6 +731,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--count", type=int, default=batch.DEFAULT_COUNT, help="쓸 글의 수(기본 5)")
     p.add_argument("--parallel", type=int, help="한꺼번에 돌릴 실행의 수(기본은 글의 수)")
     p.add_argument("--outbox", help="끝난 글을 옮길 폴더. 없으면 브랜드의 blogs 폴더에 둡니다")
+    p.add_argument("--topic", action="append", help="사람이 정한 주제. 여러 번 쓰면 주제마다 한 편씩 쓰고 --count는 보지 않습니다")
     p.set_defaults(func=cmd_batch)
     p = add("export", help="한 브랜드만 담은 두루미 사본을 그 브랜드의 레포 폴더로 내보냅니다")
     p.add_argument("--brand", required=True, help="브랜드 id")
