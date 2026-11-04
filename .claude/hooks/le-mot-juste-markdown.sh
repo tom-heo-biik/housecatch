@@ -25,8 +25,7 @@ sys.version_info >= (3, 8) or sys.exit(3)
 path = sys.argv[1]
 sys.argv = [path, "hook"]
 exec(compile(open(path, encoding="utf-8").read(), path, "exec"), {"__name__": "__main__", "__file__": path})'
-# 레포 맨 위 python/에 파이썬을 함께 넣어 두는 레포(하우스캐치 블로그 레포)에서는 그 파이썬을 먼저 씁니다.
-for py in "$here/../../python/python.exe" python python3 py; do
+for py in python python3 py; do
   command -v "$py" >/dev/null 2>&1 || continue
   args=()
   [ "$py" = py ] && args=(-3)
