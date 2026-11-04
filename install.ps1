@@ -81,6 +81,11 @@ param(
         if (-not (Test-Path -LiteralPath $inner)) {
             throw '받은 판에 install\install.ps1이 없습니다.'
         }
+        # install\install.ps1은 BOM이 있어야 Windows PowerShell 5.1이 한글을 바로 읽습니다. 빠진 채 올라간 판이라도 돌도록 붙입니다.
+        $bytes = [IO.File]::ReadAllBytes($inner)
+        if ($bytes.Length -lt 3 -or $bytes[0] -ne 0xEF -or $bytes[1] -ne 0xBB -or $bytes[2] -ne 0xBF) {
+            [IO.File]::WriteAllBytes($inner, [byte[]](@(0xEF, 0xBB, 0xBF) + $bytes))
+        }
         Write-Host ('최신 판({0})을 받아 풀었습니다.' -f $Sha.Substring(0, [Math]::Min(7, $Sha.Length)))
 
         # 실행 정책이 막지 않도록 새 PowerShell에서 Bypass로 돌립니다.

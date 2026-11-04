@@ -1,4 +1,4 @@
-# install/install.ps1
+﻿# install/install.ps1
 # 하우스캐치 블로그 도구를 이 PC에 설치합니다. Windows PowerShell 5.1에서 돕니다.
 # 원본은 이 파일이 든 install 폴더의 부모 폴더이고, 원본과 설치 폴더(-Target)가 같으면 복사를 건너뜁니다.
 # 레포 맨 위 install.ps1(irm | iex)이 받은 판을 임시 폴더에 풀어 이 파일을 부르고, 압축 파일의 설치하기.cmd도 이 파일을 부릅니다.
@@ -132,8 +132,9 @@ function Find-Claude {
 
 # 사용자 PATH(레지스트리 HKCU\Environment)에 폴더를 더합니다. 이미 있으면 그대로 둡니다.
 # [Environment]::SetEnvironmentVariable은 %VAR%가 든 값을 풀어서 REG_SZ로 바꿔 써 버리므로 레지스트리를 직접 씁니다.
-function Add-UserPath([string]$Dir) {
-    $key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Environment', $true)
+#   -SubKey와 -Quiet는 시험용입니다(다른 키에 쓰고, 바뀜 알림을 보내지 않음).
+function Add-UserPath([string]$Dir, [string]$SubKey = 'Environment', [switch]$Quiet) {
+    $key = [Microsoft.Win32.Registry]::CurrentUser.CreateSubKey($SubKey)
     try {
         $raw = [string]$key.GetValue('Path', '', [Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
         foreach ($entry in $raw.Split(';')) {
@@ -146,6 +147,7 @@ function Add-UserPath([string]$Dir) {
         $key.Close()
     }
     # 탐색기와 새로 여는 창이 바뀐 PATH를 읽도록 WM_SETTINGCHANGE를 알립니다.
+    if ($Quiet) { return $true }
     try {
         if (-not ('Housecatch.Native' -as [type])) {
             Add-Type -Namespace Housecatch -Name Native -MemberDefinition '[DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern IntPtr SendMessageTimeout(IntPtr hWnd, uint Msg, UIntPtr wParam, string lParam, uint fuFlags, uint uTimeout, out UIntPtr lpdwResult);'
