@@ -1,0 +1,13 @@
+{
+  "name": "durumi",
+  "version": "0.1.0",
+  "description": "두루미 네이버 블로그 파이프라인. 결정론 도구가 조립, 변환, 검사, 저장을 맡고 격리된 LLM 노드가 초안과 퇴고를 씁니다.",
+  "author": {
+    "name": "biik"
+  },
+  "keywords": [
+    "durumi",
+    "naverblog",
+    "blog"
+  ]
+}

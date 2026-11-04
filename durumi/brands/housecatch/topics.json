@@ -1,0 +1,313 @@
+{
+  "when_used_up": "reuse",
+  "topics": [
+    {
+      "id": "h001",
+      "topic": "화장실 천장에서 물이 뚝뚝 떨어지는 아래층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "아래층"
+    },
+    {
+      "id": "h002",
+      "topic": "아래층 천장에 물이 샌다는 첫 연락을 받고 무엇부터 해야 할지 막막한 위층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "위층"
+    },
+    {
+      "id": "h003",
+      "topic": "욕실 문 앞 마루가 검게 변하고 들뜨기 시작한 집",
+      "keyword": "",
+      "approved": false,
+      "note": "우리 집"
+    },
+    {
+      "id": "h004",
+      "topic": "거실 천장에 누런 물얼룩이 번지고 곰팡이 냄새까지 올라오는 아래층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "아래층"
+    },
+    {
+      "id": "h005",
+      "topic": "욕실 타일은 멀쩡한데 아랫집 천장으로 물이 샌다는 연락을 받은 위층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "위층"
+    },
+    {
+      "id": "h006",
+      "topic": "비만 오면 꼭대기층 천장이 다시 젖고 곰팡이 냄새가 올라오는 집",
+      "keyword": "",
+      "approved": false,
+      "note": "우리 집, 실무자 확인 대기"
+    },
+    {
+      "id": "h007",
+      "topic": "현관 천장 센서등 안에서 물이 뚝뚝 떨어지는 아래층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "아래층"
+    },
+    {
+      "id": "h008",
+      "topic": "주방 싱크대 밑 배관에서 샌 물이 아랫집 천장까지 번진 위층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "위층"
+    },
+    {
+      "id": "h009",
+      "topic": "확장한 베란다 창틀 아래 벽지가 비 오는 날마다 젖어 드는 집",
+      "keyword": "",
+      "approved": false,
+      "note": "우리 집, 실무자 확인 대기"
+    },
+    {
+      "id": "h010",
+      "topic": "천장 매립 조명에 물이 차고 차단기까지 내려간 아래층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "아래층, 실무자 확인 대기"
+    },
+    {
+      "id": "h011",
+      "topic": "다용도실 세탁기 배수 호스가 빠져 아랫집 벽이 젖고 아랫집이 단단히 화가 난 위층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "위층"
+    },
+    {
+      "id": "h012",
+      "topic": "결로인지 누수인지 모른 채 닦기만 했던 북향 방 외벽 모서리에 곰팡이가 번진 집",
+      "keyword": "",
+      "approved": false,
+      "note": "우리 집, 실무자 확인 대기"
+    },
+    {
+      "id": "h013",
+      "topic": "물을 머금은 안방 천장이 침대 위로 불룩하게 처진 아래층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "아래층"
+    },
+    {
+      "id": "h014",
+      "topic": "오랜만에 보일러를 켠 뒤 아랫집 천장에 물 자국이 생겼다는 연락을 받은 위층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "위층"
+    },
+    {
+      "id": "h015",
+      "topic": "욕실과 맞닿은 방 벽 걸레받이가 썩고 퀴퀴한 냄새가 나는 집",
+      "keyword": "",
+      "approved": false,
+      "note": "우리 집"
+    },
+    {
+      "id": "h016",
+      "topic": "아이가 자는 방 천장 모서리에 검은 곰팡이가 자꾸 번지는 아래층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "아래층"
+    },
+    {
+      "id": "h017",
+      "topic": "변기 밑에서 샌 물로 아랫집 천장이 얼룩져 비용부터 겁나는 위층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "위층"
+    },
+    {
+      "id": "h018",
+      "topic": "누수 공사와 도배를 마친 지 몇 달 만에 같은 자리에 얼룩이 다시 올라온 집",
+      "keyword": "",
+      "approved": false,
+      "note": "우리 집, 실무자 확인 대기"
+    },
+    {
+      "id": "h019",
+      "topic": "붙박이장 뒷벽이 젖어 안에 둔 옷과 이불에 곰팡이가 핀 아래층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "아래층"
+    },
+    {
+      "id": "h020",
+      "topic": "베란다 배수구 누수로 피해를 입은 아랫집이 집 전체 도배를 요구하는 위층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "위층"
+    },
+    {
+      "id": "h021",
+      "topic": "젖은 주방 천장을 뜯어야 하는데 그릇과 살림에 먼지가 앉을까 걱정인 아래층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "아래층"
+    },
+    {
+      "id": "h022",
+      "topic": "실외기실 배수구에서 샌 물로 아래층 상가 천장과 집기가 젖은 위층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "위층, 실무자 확인 대기"
+    },
+    {
+      "id": "h023",
+      "topic": "욕실 천장 점검구 안이 흥건한데 윗집은 자기 집 탓이 아니라고만 하는 아래층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "아래층"
+    },
+    {
+      "id": "h024",
+      "topic": "세를 준 집 보일러실 배관이 새 아랫집까지 피해가 났는데 당장 가 보기 어려운 집주인",
+      "keyword": "",
+      "approved": false,
+      "note": "위층"
+    },
+    {
+      "id": "h025",
+      "topic": "윗집이 배관은 고쳤다며 도배비만 주겠다는데 작은방 천장 속이 다 말랐는지 모르는 아래층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "아래층"
+    },
+    {
+      "id": "h026",
+      "topic": "시스템 에어컨 주변 천장으로 물이 새는데 업체를 몇 번 불러도 원인을 못 찾은 아래층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "아래층, 실무자 확인 대기"
+    },
+    {
+      "id": "h027",
+      "topic": "윗집이 곧 고쳐 주겠다는 말만 하고 몇 주째 미루는 사이 천장 얼룩이 점점 넓어지는 아래층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "아래층"
+    },
+    {
+      "id": "h028",
+      "topic": "아랫집이 받아 온 누수 공사 견적서의 항목이 뭉뚱그려져 있어 금액이 맞는지 알 수 없는 위층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "위층"
+    },
+    {
+      "id": "h029",
+      "topic": "싱크대 하부장 바닥판이 부풀고 문을 열 때마다 곰팡이 냄새가 올라오는 집",
+      "keyword": "",
+      "approved": false,
+      "note": "우리 집"
+    },
+    {
+      "id": "h030",
+      "topic": "이사 들어온 지 일주일 만에 작은방 천장에 물얼룩이 번진 아래층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "아래층"
+    },
+    {
+      "id": "h031",
+      "topic": "냉장고 급수 호스에서 샌 물이 아랫집 주방 천장까지 번진 위층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "위층"
+    },
+    {
+      "id": "h032",
+      "topic": "겨울 들어 보일러를 돌린 뒤부터 거실 마루 한쪽이 축축하게 들뜨는 집",
+      "keyword": "",
+      "approved": false,
+      "note": "우리 집"
+    },
+    {
+      "id": "h033",
+      "topic": "젖어서 내려앉은 천장 석고보드를 두고 도배만 새로 하면 된다는 말을 들은 아래층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "아래층"
+    },
+    {
+      "id": "h034",
+      "topic": "아랫집 천장 누수 연락을 받고 보험 접수부터 할지 원인부터 볼지 헷갈리는 위층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "위층"
+    },
+    {
+      "id": "h035",
+      "topic": "수도 요금이 갑자기 늘었는데 집 안 어디서 새는지 보이지 않는 집",
+      "keyword": "",
+      "approved": false,
+      "note": "우리 집"
+    },
+    {
+      "id": "h036",
+      "topic": "거실 천장에서 떨어진 물에 TV와 소파까지 젖은 아래층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "아래층"
+    },
+    {
+      "id": "h037",
+      "topic": "누수 원인을 찾으려면 거실 바닥을 여러 군데 깨야 한다는 말에 겁이 난 위층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "위층"
+    },
+    {
+      "id": "h038",
+      "topic": "신발장 아래 현관 바닥이 늘 젖어 있고 타일이 들뜨기 시작한 집",
+      "keyword": "",
+      "approved": false,
+      "note": "우리 집"
+    },
+    {
+      "id": "h039",
+      "topic": "누수로 젖었던 벽지에 검은 곰팡이가 다시 올라와 페인트로 덮어 버릴까 고민하는 아래층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "아래층"
+    },
+    {
+      "id": "h040",
+      "topic": "우리 집에서 샌 물이 아래로 두 집까지 번져 어느 집부터 챙겨야 할지 모르는 위층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "위층"
+    },
+    {
+      "id": "h041",
+      "topic": "필로티 위 2층이라 겨울이면 거실 벽 아래쪽에 곰팡이가 번지는 집",
+      "keyword": "",
+      "approved": false,
+      "note": "우리 집, 실무자 확인 대기"
+    },
+    {
+      "id": "h042",
+      "topic": "비 오는 날에만 천장에서 물이 떨어져 윗집에 말을 꺼내기도 애매한 아래층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "아래층, 실무자 확인 대기"
+    },
+    {
+      "id": "h043",
+      "topic": "아랫집이 공사하는 동안 다른 곳에서 지낼 비용까지 이야기해 와 막막한 위층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "위층, 실무자 확인 대기"
+    },
+    {
+      "id": "h044",
+      "topic": "관리사무소와 윗집이 서로 책임을 미루는 사이 거실 천장 물이 그치지 않는 아래층 집",
+      "keyword": "",
+      "approved": false,
+      "note": "아래층, 실무자 확인 대기"
+    }
+  ]
+}

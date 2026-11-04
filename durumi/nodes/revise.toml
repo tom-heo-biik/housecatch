@@ -1,0 +1,24 @@
+# 퇴고 노드. 순서는 크레인 autopilot Phase 3(revise, 클라이언트, writing, blog)를 따르고, 서식 기준과 원고 문법 안내를 더합니다.
+# 크레인은 1단계와 3단계를 한 세션에서 돌려 퇴고 때도 form(서식 기준)과 palette가 컨텍스트에 남아 있었습니다.
+# 격리 노드에서는 그 연결이 끊겨 form.md와 팔레트 안내를 뒤에 더합니다. 2026-09-30 비교 실험(브랜드 다섯, max)에서
+# 네 문서만 준 퇴고는 문장당 쉼표가 초안의 8배로 늘고 인용 5개 중 4개를 지웠고, 이 구성은 가린 판정에서 9대1로 앞섰습니다.
+# 네 문서만으로 되돌리려면 context/form.md와 generated:palettes 두 줄을 지우면 됩니다.
+# 퇴고는 HTML이 아니라 원고 위에서 합니다. 크기, 간격, 색 값 같은 겉모양만 렌더러가 다시 입힙니다.
+
+[node]
+name = "revise"
+model = "claude-opus-5-5"
+effort = "max"              # Tom 선호(크레인 설정과 같음). max 퇴고는 실측 6~11분이라 제한을 한 시간으로 둠
+timeout_sec = 3600
+stall_sec = 600              # 흘려 받는 이벤트가 10분 동안 없으면 멈춘 것으로 봄
+max_budget_usd = 5.0
+retries = 2
+include = [
+  "context/revise.md",
+  "brand",
+  "context/writing.md",
+  "context/blog.md",
+  "context/form.md",
+  "generated:syntax",
+  "generated:palettes",
+]

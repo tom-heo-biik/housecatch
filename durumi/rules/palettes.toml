@@ -1,0 +1,47 @@
+# 강조 색 팔레트의 정본입니다. 렌더러, 린터, 노드용 팔레트 안내가 모두 여기서 읽습니다.
+# 원본은 mgm-biik/crane 6b7f9e1의 skills/crane-palette/SKILL.md입니다.
+
+placeholder = "#00B140"            # 플레이스홀더 전용 초록(PANTONE 354 C), 강조에 쓰지 않음
+placeholder_pantone = "354 C"
+
+[palettes.green]
+label = "Green"
+text = "#007A33"
+text_pantone = "356 C"
+highlight = "#C5E86C"
+highlight_pantone = "374 C"
+
+[palettes.blue]
+label = "Blue"
+text = "#0072CE"
+text_pantone = "285 C"
+highlight = "#9BCBEB"
+highlight_pantone = "291 C"
+
+[palettes.purple]
+label = "Purple"
+text = "#5F249F"
+text_pantone = "267 C"
+highlight = "#C5B4E3"
+highlight_pantone = "2635 C"
+
+[palettes.pink]
+label = "Pink"
+text = "#DA1884"
+text_pantone = "219 C"
+highlight = "#F9B5C4"
+highlight_pantone = "707 C"
+
+[palettes.brown]
+label = "Brown"
+text = "#4E3629"
+text_pantone = "476 C"
+highlight = "#D9C89E"
+highlight_pantone = "7501 C"
+
+[palettes.black]
+label = "Black"
+text = "#2D2926"
+text_pantone = "Black C"
+highlight = "#C7C9C7"
+highlight_pantone = "420 C"

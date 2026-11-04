@@ -1,0 +1,50 @@
+# 스마트에디터 ONE 서식 규칙의 정본입니다. 렌더러, 린터, 노드용 원고 문법 안내가 모두 여기서 읽습니다.
+# 원본은 mgm-biik/crane 6b7f9e1의 skills/crane-form/SKILL.md입니다. 붙여넣기 보존 여부는 사람이 시험해 docs/에 기록합니다.
+
+body_font_px = 16
+subheading_font_px = 24
+max_palettes = 2
+title_first_block = "paragraph"      # 제목 바로 뒤 첫 블록은 도입 문단(끌어당김)이어야 하고, 문단이 아니면 오류(P001)
+
+[punctuation]
+banned = { "—" = "em dash", "·" = "가운뎃점" }
+watch = { "‧" = "가운뎃점 닮은꼴(U+2027)", "・" = "가운뎃점 닮은꼴(U+30FB)", "∙" = "가운뎃점 닮은꼴(U+2219)", "⋅" = "가운뎃점 닮은꼴(U+22C5)", "–" = "en dash", "：" = "전각 콜론" }
+colon_allowed = '(?<=\d):(?=\d)'     # 콜론은 숫자 사이(시각, 비율)에만 허용(L003). [이미지: 설명] 같은 표시 문법의 콜론은 괜찮고, 설명과 대상 안에서는 링크 주소의 https:// 앞머리만 예외
+
+[emoji]
+# 보존이 검증된 여덟 가지와 그 뜻(크레인 서식 규칙). 원고에서는 줄, 목록 항목, 표 셀, 소제목의 첫머리에만 씁니다.
+allowed = ["✅", "🔴", "☑️", "📌", "🔍", "💡", "⚠️", "🚫"]
+table_only = ["✅", "🔴"]
+outside_table_only = ["☑️"]
+
+[emoji.meaning]
+"✅" = "표 안의 가능"
+"🔴" = "표 안의 불가"
+"☑️" = "표 밖의 체크리스트 항목과 헤더"
+"📌" = "변하지 않는 점"
+"🔍" = "자세히 보기"
+"💡" = "팁"
+"⚠️" = "주의"
+"🚫" = "금지"
+
+[placeholder]
+image = '[<span style="color:{color};">이미지를 첨부하세요: {desc} 이미지</span>]'
+link = '[<span style="color:{color};">링크를 삽입하세요: {target}</span>]'
+
+[spacing]
+# 독립된 <br> 줄의 개수입니다. 소제목 앞 간격은 블록 사이 간격을 대신합니다(더하지 않음).
+after_title = 1
+before_subheading = 3
+after_subheading = 1
+between_blocks = 1
+
+[html]
+# 문서 뼈대. 과거 산출물은 16px를 <style>, body 속성, 감싸개 div 세 방식으로 걸었습니다. 붙여넣기 시험 뒤 하나로 확정합니다.
+style = "body{font-size:16px;color:#000000;}p{margin:0;}table{border-collapse:collapse;}th,td{border:1px solid #000000;padding:8px 12px;}"
+allowed_tags = ["html", "head", "meta", "title", "style", "body", "h1", "p", "br", "strong", "span", "blockquote", "ul", "ol", "li", "table", "thead", "tbody", "tr", "th", "td"]
+
+[manuscript]
+# 원고 판정에 쓰는 값입니다. 목록은 셋 이상이 나란히 설 때 쓰고(크레인 서식 규칙), 미만이면 경고만 합니다.
+list_min_items = 3
+# 독자가 아니라 형식을 향한 문장입니다. 격리 실험에서 모델이 스키마의 칸을 채우려고 이런 말을 지어냈습니다.
+meta_markers = ["[형식 안내", "형식을 맞추기 위해", "형식에 맞추기 위해", "(빈 칸)", "(빈칸)", "[빈 칸]", "[빈칸]"]

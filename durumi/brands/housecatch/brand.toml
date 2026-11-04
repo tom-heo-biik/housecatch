@@ -1,0 +1,8 @@
+id = "housecatch"
+name = "하우스캐치"
+aliases = ["하우스캐치", "housecatch"]
+# palettes = []
+# banned_phrases = []
+# watch_phrases = []
+
+# 주제를 맡긴 요청('아무거나', '알아서' 등)에 도구가 배정하는 주제는 이 폴더의 topics.json에 있습니다(tools/topics.py, tools/claims.py).
