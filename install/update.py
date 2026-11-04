@@ -49,6 +49,42 @@ DEV_COPY = "개발 폴더(.git)라 업데이트하지 않습니다"
 SHA = re.compile(r"[0-9a-f]{40}")
 VERBOSE = False
 
+# 마크다운 훅. Git이 없는 PC의 Claude Code는 훅을 PowerShell로 돌리고, 그때 PreToolUse 훅이 실패하면 도구 호출이
+# 막힙니다. 그래서 셸을 거치지 않는 exec 꼴로 설치 폴더의 파이썬이 훅 파일을 바로 부르게 하고, 레포에 커밋한 설정이
+# 아니라 설치 폴더의 .claude/settings.local.json에만 넣습니다(파이썬 폴더가 없는 개발 클론에서는 돌지 않게).
+# 작업자가 고른 권한 같은 다른 설정은 그대로 둡니다.
+LOCAL_SETTINGS = Path(".claude") / "settings.local.json"
+HOOK_FILE = "le_mot_juste_markdown.py"
+HOOK = {
+    "matcher": "Write|Edit|MultiEdit",
+    "hooks": [{
+        "type": "command",
+        "command": "${CLAUDE_PROJECT_DIR}/python/python.exe",
+        "args": ["-X", "utf8", "${CLAUDE_PROJECT_DIR}/.claude/hooks/" + HOOK_FILE, "hook"],
+        "timeout": 30,
+    }],
+}
+
+
+def ensure_hook(root: Path) -> bool:
+    """Put HOOK into root/.claude/settings.local.json, replacing an older entry for the same file. True when the
+    file changed. A file that is not a JSON object is left as it is."""
+    path = root / LOCAL_SETTINGS
+    old = path.read_text(encoding="utf-8-sig") if path.is_file() else ""
+    data = json.loads(old) if old.strip() else {}
+    if not isinstance(data, dict):
+        return False
+    hooks = data.get("hooks") if isinstance(data.get("hooks"), dict) else {}
+    entries = [entry for entry in hooks.get("PreToolUse", []) if HOOK_FILE not in json.dumps(entry, ensure_ascii=False)]
+    hooks["PreToolUse"] = entries + [HOOK]
+    data["hooks"] = hooks
+    new = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
+    if new == old:
+        return False
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(new, encoding="utf-8", newline="\n")
+    return True
+
 
 def note(error: BaseException) -> None:
     if VERBOSE:
@@ -165,6 +201,7 @@ def run(argv: list[str]) -> str:
     parser.add_argument("--zip-path", type=Path, help="시험용. 받은 것처럼 쓸 압축 파일")
     parser.add_argument("--sha", help="시험용. 최신 판 번호(주면 GitHub API를 부르지 않습니다)")
     parser.add_argument("--verbose", action="store_true", help="실패 까닭을 stderr에 찍습니다")
+    parser.add_argument("--hook-only", action="store_true", help="마크다운 훅만 설치 폴더 설정에 넣고 끝냅니다(설치기가 부름)")
     args = parser.parse_args(argv)
     VERBOSE = args.verbose
 
@@ -173,6 +210,12 @@ def run(argv: list[str]) -> str:
     # 개발 레포에서 잘못 돌려 커밋하지 않은 작업을 덮지 않게 합니다. 설치본에는 판 기록이 있습니다.
     if (root / ".git").exists() and not version_file.exists():
         return DEV_COPY
+    try:
+        ensure_hook(root)
+    except Exception as error:  # 훅을 못 넣어도 글쓰기는 막지 않습니다.
+        note(error)
+    if args.hook_only:
+        return ""
     current = version_file.read_text(encoding="utf-8-sig").strip() if version_file.is_file() else ""
 
     try:
@@ -219,7 +262,8 @@ def main() -> int:
     except BaseException as error:  # 어떤 실패도 글쓰기를 막지 않습니다.
         note(error)
         line = NOT_DONE
-    print(line, flush=True)
+    if line:
+        print(line, flush=True)
     return 0
 
 

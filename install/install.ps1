@@ -297,6 +297,12 @@ try {
     $skillFile = Join-Path $SkillDir 'SKILL.md'
     Write-Utf8NoBom $skillFile $text
     Write-Note $skillFile
+    # 마크다운 훅은 셸을 거치지 않는 exec 꼴로 설치 폴더의 .claude/settings.local.json에 넣습니다(install/update.py).
+    # Git이 없는 PC에서 bash로 부르는 훅은 PowerShell로 돌다 실패해 Claude의 파일 쓰기를 막기 때문입니다.
+    $hookPython = Join-Path $Target 'python\python.exe'
+    if ([IO.File]::Exists($hookPython)) {
+        & $hookPython -X utf8 (Join-Path $Target 'install\update.py') --hook-only
+    }
 
     Write-Step '[6/6] 바탕 화면 바로가기를 만듭니다.'
     if ($NoShortcuts) {
