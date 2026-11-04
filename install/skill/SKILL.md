@@ -2,7 +2,7 @@
 name: housecatch
 description: "하우스캐치 네이버 블로그를 씁니다. 사용자가 /housecatch를 부르거나, 하우스캐치 블로그를 써 달라고 하거나, 주제를 주며 블로그를 부탁할 때 씁니다. 주제가 없으면 지난 글과 겹치지 않는 주제를 도구가 정해 다섯 편을, 주제가 있으면 주제마다 한 편을 함께 써서 하우스캐치 블로그 폴더의 발행 전 폴더에 저장합니다. 20분 안팎이 걸립니다."
 argument-hint: "[편수 또는 주제]"
-allowed-tools: Bash({{ROOT}}/python/python.exe:*), PowerShell({{ROOT}}/python/python.exe:*)
+allowed-tools: Bash({{ROOT}}/python/python.exe *), PowerShell({{ROOT}}/python/python.exe *)
 ---
 # install/skill/SKILL.md
 
